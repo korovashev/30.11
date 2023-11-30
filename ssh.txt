@@ -1,4 +1,5 @@
-ssh-keygen -t ed25519 (или название своё) -C "email гита"
+ssh-keygen -t ed25519 (или название своё) -C "email гита" 
+(кучу раз нажать enter)
 ls -alt
 cd .ssh
 cat (название).pub 
