@@ -3,14 +3,14 @@ sudo usermod -aG docker ${USER}
 su - ${USER}
 groups
 
-docker network create todo-app
+docker network create todo-app (создание сети под названием)
 docker run -d \
-    --network todo-app --network-alias mysql \
+    --network todo-app --network-alias mysql \ (в контейнере запускаем сеть под названием, называем переменной mysql)
     -v todo-mysql-data:/var/lib/mysql \
-    -e MYSQL_ROOT_PASSWORD=secret \
-    -e MYSQL_DATABASE=todos \
-    mysql:8.0
-docker exec -it <mysql-container-id> mysql -u root -p
+    -e MYSQL_ROOT_PASSWORD=secret \ (переменные со значением пароля)
+    -e MYSQL_DATABASE=todos \ (переменная с названием базы данных нашей)
+    mysql:8.0 (приложенька наша)
+docker exec -it <mysql-container-id> mysql -u root -p (перед этим через docker ps узнать название контейнера - будет в конце и заменить <mysql-container-id>; запуск mysql)
 mysql> SHOW DATABASES;
 
 +--------------------+
@@ -26,8 +26,8 @@ mysql> SHOW DATABASES;
 
 mysql> exit
 
-docker run -it --network todo-app nicolaka/netshoot
-dig mysql
+docker run -it --network todo-app nicolaka/netshoot (запускаем второй контейнер и связываем с первым)
+dig mysql (связывам с первым контейнером/базой данных)
 
 ; <<>> DiG 9.18.8 <<>> mysql
 ;; global options: +cmd
@@ -46,10 +46,10 @@ mysql.			600	IN	A	172.23.0.2
 ;; WHEN: Tue Oct 01 23:47:24 UTC 2019
 ;; MSG SIZE  rcvd: 44
 
-git clone https://github.com/docker/getting-started-app.git
+git clone https://github.com/docker/getting-started-app.git (приложеньку копируем к себе на компьютер с гита)
 
-cd getting-started-app
-docker run -dp 127.0.0.1:3000:3000 \
+cd getting-started-app (переходим в папочку)
+docker run -dp 127.0.0.1:3000:3000 \ (запускаем контейнер в сети с 3000 портом и переменными)
   -w /app -v "$(pwd):/app" \
   --network todo-app \
   -e MYSQL_HOST=mysql \
@@ -57,7 +57,7 @@ docker run -dp 127.0.0.1:3000:3000 \
   -e MYSQL_PASSWORD=secret \
   -e MYSQL_DB=todos \
   node:18-alpine \
-  sh -c "yarn install && yarn run dev"
-docker logs -f <container-id>
+  sh -c "yarn install && yarn run dev" (скачиваем ещё node)
+docker logs -f <container-id> (заменить <container-id> на имя, которое узнали через docker ps в новом контейнере в конце там будет из слов)
 
-http://localhost:3000
+http://localhost:3000 (в браузере эту фишечку вставляем и радуемся результату)
